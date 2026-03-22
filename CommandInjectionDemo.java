@@ -1,17 +1,18 @@
 import java.io.*;
 
 public class CommandInjectionDemo {
+    public void ejecutarPing(String host) throws Exception {
+        String[] cmd = {"/bin/sh", "-c", "ping " + host};
+        Runtime.getRuntime().exec(cmd);
+    }
+
+    public void ejecutarLS(String path) throws Exception {
+        Runtime.getRuntime().exec("ls " + path);
+    }
+
     public static void main(String[] args) throws Exception {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        System.out.print("Ingresa comando: ");
-        String userInput = reader.readLine();
-        Runtime runtime = Runtime.getRuntime();
-        Process process = runtime.exec(new String[]{"/bin/sh", "-c", userInput});
-        BufferedReader output = new BufferedReader(
-            new InputStreamReader(process.getInputStream()));
-        String line;
-        while ((line = output.readLine()) != null) {
-            System.out.println(line);
-        }
+        CommandInjectionDemo demo = new CommandInjectionDemo();
+        demo.ejecutarPing(args[0]);
+        demo.ejecutarLS(args[1]);
     }
 }
