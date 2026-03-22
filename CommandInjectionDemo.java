@@ -1,5 +1,10 @@
+import java.io.*;
+
 public class CommandInjectionDemo {
-    public void ejecutarComando(String input) throws Exception {
-        Runtime.getRuntime().exec(input);
+    public static void main(String[] args) throws Exception {
+        String userInput = args[0];
+        String cmd = "ping " + userInput;
+        Runtime rt = Runtime.getRuntime();
+        Process proc = rt.exec(cmd);
     }
 }
