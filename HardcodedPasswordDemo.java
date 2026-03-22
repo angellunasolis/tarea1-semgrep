@@ -1,7 +1,10 @@
+import java.sql.*;
+
 public class HardcodedPasswordDemo {
-    public void conectar() {
+    public static void main(String[] args) throws Exception {
         String password = "SuperSecreto123";
-        String usuario = "admin";
-        System.out.println("Conectando con: " + usuario + " / " + password);
+        String user = "admin";
+        Connection conn = DriverManager.getConnection(
+            "jdbc:mysql://localhost/db", user, password);
     }
 }
