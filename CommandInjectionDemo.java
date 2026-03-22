@@ -1,18 +1,20 @@
 import java.io.*;
+import java.util.Arrays;
+import java.util.List;
 
 public class CommandInjectionDemo {
-    public void ejecutarPing(String host) throws Exception {
-        String[] cmd = {"/bin/sh", "-c", "ping " + host};
-        Runtime.getRuntime().exec(cmd);
-    }
+    private static final List<String> ALLOWED_HOSTS = Arrays.asList("google.com", "localhost");
 
-    public void ejecutarLS(String path) throws Exception {
-        Runtime.getRuntime().exec("ls " + path);
+    public void ejecutarPing(String host) throws Exception {
+        if (!ALLOWED_HOSTS.contains(host)) {
+            throw new IllegalArgumentException("Host no permitido");
+        }
+        ProcessBuilder pb = new ProcessBuilder("ping", host);
+        pb.start();
     }
 
     public static void main(String[] args) throws Exception {
         CommandInjectionDemo demo = new CommandInjectionDemo();
-        demo.ejecutarPing(args[0]);
-        demo.ejecutarLS(args[1]);
+        demo.ejecutarPing("localhost");
     }
 }
